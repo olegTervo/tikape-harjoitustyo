@@ -1,0 +1,19 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Kysymykset</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1>Tässä on kaikki kysymykset</h1> 
+        <a th:href="${'/uusi_kysymys'}">Uusi kysymys</a>
+
+        <ol>
+            <li th:each="kysymys: ${kysymykset}">
+                <span th:text="${kysymys.teksti}">kysymyksen teksti</span> <a th:href="${'/kysymys/' + kysymys.id}">linkki</a> <a th:href="${'/poista_kysymys/' + kysymys.id}">poista</a>
+            </li>
+        </ol>
+    </body>
+</html>
