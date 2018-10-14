@@ -8,13 +8,17 @@
 
     <body>
         <h1>Tässä on kaikki kysymykset</h1> 
-        <a th:href="${'/uusi_kysymys'}">Uusi kysymys</a> <a th:href="${'/katsominen'}">Katsominen</a>
+        <a th:href="${'/kysymykset'}">Kysymykset</a>
 
-        <ol>
+        <ul>
             <li th:each="kysymys: ${kysymykset}">
-                <span th:text="${kysymys.teksti}">kysymyksen teksti</span> <a th:href="${'/kysymys/' + kysymys.id}">linkki</a> <a th:href="${'/poista_kysymys/' + kysymys.id}">poista</a>
-                
+                <h2><span th:text="${kysymys.teksti}">kysymyksen teksti</span></h2>
+                <ol>
+                    <li th:each="vastaus: ${kysymys.vastaukset}">
+                        <p><span th:text="${vastaus.teksti}">vastauksen teksti</span></p>
+                    </li>
+                </ol>
             </li>
-        </ol>
+        </ul>
     </body>
 </html>

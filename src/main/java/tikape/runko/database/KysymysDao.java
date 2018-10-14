@@ -60,8 +60,11 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
             String kurssi = rs.getString("kurssi");
             String aihe = rs.getString("aihe");
             String teksti = rs.getString("teksti");
+            
+            Kysymys k = new Kysymys(id, kurssi, aihe, teksti);
+            k.addVastaukset(new VastausDao(this.database).findAll(id));
 
-           kysymykset.add(new Kysymys(id, kurssi, aihe, teksti));
+            kysymykset.add(k);
         }
 
         rs.close();

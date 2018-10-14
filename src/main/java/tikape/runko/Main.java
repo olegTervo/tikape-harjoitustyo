@@ -96,5 +96,12 @@ public class Main {
             res.redirect("/kysymys/" + kysymys_id);
             return "";
         });
+        
+        get("/katsominen", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("kysymykset", kysymysDao.findAll());
+
+            return new ModelAndView(map, "katsominen");
+        }, new ThymeleafTemplateEngine());
     }
 }
