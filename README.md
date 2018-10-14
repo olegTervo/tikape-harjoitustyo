@@ -1,4 +1,4 @@
-# tikape-runko
+# Kysymysjärjestelmä
 
-Tietokantojen perusteet -kurssilla tehtävän web-sovelluksen pohja.
+Tämä on tikape-harjoitustyö.
 
