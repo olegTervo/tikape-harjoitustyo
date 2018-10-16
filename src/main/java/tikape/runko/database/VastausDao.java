@@ -16,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tikape.runko.domain.Vastaus;
 
 public class VastausDao implements Dao<Vastaus, Integer> {
@@ -28,7 +30,12 @@ public class VastausDao implements Dao<Vastaus, Integer> {
 
     @Override
     public Vastaus findOne(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
+        Connection connection;
+        try {
+            connection = database.getConnection();
+        } catch (Exception ex) {
+            return null;
+        }
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Vastaus WHERE id = ?");
         stmt.setObject(1, key);
 
@@ -55,7 +62,12 @@ public class VastausDao implements Dao<Vastaus, Integer> {
     @Override
     public List<Vastaus> findAll() throws SQLException {
 
-        Connection connection = database.getConnection();
+        Connection connection;
+        try {
+            connection = database.getConnection();
+        } catch (Exception ex) {
+            return null;
+        }
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Vastaus");
 
         ResultSet rs = stmt.executeQuery();
@@ -76,7 +88,7 @@ public class VastausDao implements Dao<Vastaus, Integer> {
         return vastaukset;
     }
     
-    public List<Vastaus> findAll(Integer kID) throws SQLException {
+    public List<Vastaus> findAll(Integer kID) throws SQLException, Exception {
 
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Vastaus WHERE kysymys_id = ?");
@@ -100,7 +112,7 @@ public class VastausDao implements Dao<Vastaus, Integer> {
         return vastaukset;
     }
     
-    public void add(Vastaus v) throws SQLException {
+    public void add(Vastaus v) throws SQLException, Exception {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Vastaus(teksti, oikein, kysymys_id) VALUES (?, ?, ?)");
         stmt.setObject(1, v.getTeksti());
@@ -116,7 +128,12 @@ public class VastausDao implements Dao<Vastaus, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
+        Connection connection;
+        try {
+            connection = database.getConnection();
+        } catch (Exception ex) {
+            return;
+        }
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM Vastaus WHERE id=?");
         stmt.setObject(1, key);
 
@@ -126,7 +143,7 @@ public class VastausDao implements Dao<Vastaus, Integer> {
         connection.close();
     }
     
-    public void deleteAll(Integer key) throws SQLException {
+    public void deleteAll(Integer key) throws SQLException, Exception {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM Vastaus WHERE kysymys_id=?");
         stmt.setObject(1, key);

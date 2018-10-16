@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tikape.runko.domain.Kysymys;
 
 public class KysymysDao implements Dao<Kysymys, Integer> {
@@ -23,7 +25,12 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
 
     @Override
     public Kysymys findOne(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
+        Connection connection;
+        try {
+            connection = database.getConnection();
+        } catch (Exception ex) {
+            return null;
+        }
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Kysymys WHERE id = ?");
         stmt.setObject(1, key);
 
@@ -50,7 +57,12 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
     @Override
     public List<Kysymys> findAll() throws SQLException {
 
-        Connection connection = database.getConnection();
+        Connection connection;
+        try {
+            connection = database.getConnection();
+        } catch (Exception ex) {
+            return null;
+        }
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Kysymys");
 
         ResultSet rs = stmt.executeQuery();
@@ -62,7 +74,11 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
             String teksti = rs.getString("teksti");
             
             Kysymys k = new Kysymys(id, kurssi, aihe, teksti);
-            k.addVastaukset(new VastausDao(this.database).findAll(id));
+            try {
+                k.addVastaukset(new VastausDao(this.database).findAll(id));
+            } catch (Exception ex) {
+                Logger.getLogger(KysymysDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             kysymykset.add(k);
         }
@@ -74,7 +90,7 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
         return kysymykset;
     }
     
-    public void add(Kysymys k) throws SQLException {
+    public void add(Kysymys k) throws SQLException, Exception {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Kysymys(kurssi, aihe, teksti) VALUES (?, ?, ?)");
         stmt.setObject(1, k.getKurssi());
@@ -89,7 +105,12 @@ public class KysymysDao implements Dao<Kysymys, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
+        Connection connection;
+        try {
+            connection = database.getConnection();
+        } catch (Exception ex) {
+            return;
+        }
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM Kysymys WHERE id=?");
         stmt.setObject(1, key);
 
