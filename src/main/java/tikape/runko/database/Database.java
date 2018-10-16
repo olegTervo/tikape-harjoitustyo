@@ -45,14 +45,14 @@ public class Database {
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
         lista.add("CREATE TABLE Kysymys ("
-                + "id integer PRIMARY KEY, "
+                + "id integer serial PRIMARY KEY, "
                 + "kurssi varchar(255), "
                 + "aihe varchar(255), "
                 + "teksti varchar(500)"
                 + ");");
         
         lista.add("CREATE TABLE Vastaus ("
-                + "id integer PRIMARY KEY, "
+                + "id integer serial PRIMARY KEY, "
                 + "kysymys_id integer,"
                 + "teksti varchar(500), "
                 + "oikein boolean, "
